@@ -201,7 +201,7 @@ def run():
         learning_rate = tf.placeholder(tf.float32, name="learning_rate")
         correct_label = tf.placeholder(tf.float32, [None, image_shape[0], image_shape[1], num_classes],
                                        name="correct_label")
-        epochs = 8
+        epochs = 100
         batch_size = 32
 
         input_image, keep_prob, layer3_out, layer4_out, layer7_out = load_vgg(sess, vgg_path)
@@ -218,7 +218,7 @@ def run():
         convertor = SegmentationProcessor(image_shape, sess, logits, keep_prob, input_image)
 
         print("Processing test video...")
-        videoname = 'test_video'
+        videoname = 'challenge'
         output_file = videoname + '_output.mp4'
         input_file = videoname + '.mp4'
         clip = VideoFileClip(input_file)
