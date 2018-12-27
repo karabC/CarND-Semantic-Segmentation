@@ -5,6 +5,52 @@ import helper
 import warnings
 from distutils.version import LooseVersion
 import project_tests as tests
+import numpy as np
+import scipy.misc
+from glob import glob
+from moviepy.editor import VideoFileClip
+
+'''
+For process the image with segmentation
+'''
+class SegmentationProcessor(object):
+    def __init__(self, image_shape, sess, logits, keep_prob, input_image):
+        self.sess = sess
+        self.logits = logits
+        self.keep_prob = keep_prob
+        self.input_image = input_image
+        self.image_shape = image_shape
+
+    def process_image(self, image):
+        image_shape = self.image_shape
+        sess = self.sess
+        logits = self.logits
+        keep_prob = self.keep_prob
+        input_image = self.input_image
+
+        # Persist original shape for later restore
+        original_shape = image.shape
+
+        # Resize to fit the model inferencing
+        image = scipy.misc.imresize(image, image_shape)
+
+        # Inference the images
+        softmax_image = sess.run(
+            [tf.nn.softmax(logits)],
+            {keep_prob: 1.0, input_image: [image]})
+        softmax_image = softmax_image[0][:, 1].reshape(
+            image_shape[0], image_shape[1])
+
+        # Apply the mask for the segmentation
+        segmentation = (softmax_image > 0.5).reshape(image_shape[0], image_shape[1], 1)
+        mask = np.dot(segmentation, np.array([[0, 255, 0, 127]]))
+        mask = scipy.misc.toimage(mask, mode="RGBA")
+        final_image = scipy.misc.toimage(image)
+        final_image.paste(mask, box=None, mask=mask)
+
+        # Restore orginal image shape
+        return scipy.misc.imresize(np.array(final_image), original_shape)
+
 
 # Check TensorFlow Version
 assert LooseVersion(tf.__version__) >= LooseVersion(
@@ -125,6 +171,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
     #return loss
 
 
+
 tests.test_train_nn(train_nn)
 
 
@@ -154,7 +201,7 @@ def run():
         learning_rate = tf.placeholder(tf.float32, name="learning_rate")
         correct_label = tf.placeholder(tf.float32, [None, image_shape[0], image_shape[1], num_classes],
                                        name="correct_label")
-        epochs = 1000
+        epochs = 8
         batch_size = 32
 
         input_image, keep_prob, layer3_out, layer4_out, layer7_out = load_vgg(sess, vgg_path)
@@ -168,7 +215,15 @@ def run():
 
 
         # OPTIONAL: Apply the trained model to a video
+        convertor = SegmentationProcessor(image_shape, sess, logits, keep_prob, input_image)
 
+        print("Processing test video...")
+        videoname = 'test_video'
+        output_file = videoname + '_output.mp4'
+        input_file = videoname + '.mp4'
+        clip = VideoFileClip(input_file)
+        video_clip = clip.fl_image(convertor.process_image)
+        video_clip.write_videofile(output_file, audio=False)
 
 if __name__ == '__main__':
     run()
