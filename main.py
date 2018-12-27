@@ -159,7 +159,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
     :param keep_prob: TF Placeholder for dropout keep probability
     :param learning_rate: TF Placeholder for learning rate
     """
-    keep_prob_ = 0.8
+    keep_prob_ = 0.75
     learning_rate_ = 0.0001
     sess.run(tf.global_variables_initializer())
     for epoch in range(epochs):
@@ -201,8 +201,8 @@ def run():
         learning_rate = tf.placeholder(tf.float32, name="learning_rate")
         correct_label = tf.placeholder(tf.float32, [None, image_shape[0], image_shape[1], num_classes],
                                        name="correct_label")
-        epochs = 100
-        batch_size = 32
+        epochs = 500
+        batch_size = 16
 
         input_image, keep_prob, layer3_out, layer4_out, layer7_out = load_vgg(sess, vgg_path)
         layers_output = layers(layer3_out, layer4_out, layer7_out, num_classes)
