@@ -114,12 +114,13 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
     :param learning_rate: TF Placeholder for learning rate
     """
     keep_prob_ = 0.8
+    learning_rate_ = 0.0001
     sess.run(tf.global_variables_initializer())
     for epoch in range(epochs):
         batch_count=0
         for image, label in get_batches_fn(batch_size):
             batch_count+=1
-            _, loss=sess.run([train_op,cross_entropy_loss], feed_dict={input_image:image, correct_label:label, keep_prob:keep_prob_, learning_rate:learning_rate})
+            _, loss=sess.run([train_op,cross_entropy_loss], feed_dict={input_image:image, correct_label:label, keep_prob:keep_prob_, learning_rate:learning_rate_})
             print("Epoch no: "+str(epoch+1)+", Batch number: "+str(batch_count)+", Loss:  "+str(loss))
     #return loss
 
@@ -155,7 +156,6 @@ def run():
                                        name="correct_label")
         epochs = 1000
         batch_size = 32
-        learning_rate = 0.0001
 
         input_image, keep_prob, layer3_out, layer4_out, layer7_out = load_vgg(sess, vgg_path)
         layers_output = layers(layer3_out, layer4_out, layer7_out, num_classes)
