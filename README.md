@@ -35,10 +35,12 @@ For running in Udacity worspace, can leverage the keep_alive.py for the long tra
 
 ## Video
 The segmentation had been ran on the Project 1 video.
+### Tiral 3
 [![Trial 3](http://img.youtube.com/vi/1IDDQ2PqZUw/0.jpg)](http://www.youtube.com/watch?v=1IDDQ2PqZUw "Trial 3")
 
+### Tiral 5
 [![Trial 5](http://img.youtube.com/vi/xIvpIcPlwHw/0.jpg)](http://www.youtube.com/watch?v=xIvpIcPlwHw "Trial 5")
-https://youtu.be/xIvpIcPlwHw
+
 
 ### Submission
 1. Ensure you've passed all the unit tests.
