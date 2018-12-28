@@ -29,13 +29,16 @@ For running in Udacity worspace, can leverage the keep_alive.py for the long tra
 | ------ |:------:| -----------:| ---------|---------------|
 | 1      | 8      | 1           | 0.35     | 0.143 - 0.246 |
 | 2      | 100    | 32          | 0.2      | 0.167 - 0.173 |
-| 3      | 500    | 16          | 0.25     |   In progress |
+| 3      | 500    | 16          | 0.25     | 0.044 - 0.052 |
 | 4      | 500    | 8           | 0.25     | 0.022 - 0.032 |
-| 5      | 1000   | 4           | 0.25     |   In progress |
+| 5      | 500    | 4           | 0.25     | 0.028 - 0.040 |
 
-***
-Some experiments are still running and Trail 4 data are uploaded.
-***
+## Video
+The segmentation had been ran on the Project 1 video.
+[![Trial 3](http://img.youtube.com/vi/1IDDQ2PqZUw/0.jpg)](http://www.youtube.com/watch?v=1IDDQ2PqZUw "Trial 3")
+
+[![Trial 5](http://img.youtube.com/vi/xIvpIcPlwHw/0.jpg)](http://www.youtube.com/watch?v=xIvpIcPlwHw "Trial 5")
+https://youtu.be/xIvpIcPlwHw
 
 ### Submission
 1. Ensure you've passed all the unit tests.
